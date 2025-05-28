@@ -16,9 +16,11 @@ import {
   Globe,
   Users,
   Key,
-  Save
+  Save,
+  Settings2
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import AdvancedSettings from './AdvancedSettings';
 
 const Settings = () => {
   const [settings, setSettings] = useState({
@@ -89,13 +91,14 @@ const Settings = () => {
       </div>
 
       <Tabs defaultValue="general" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-6">
+        <TabsList className="grid w-full grid-cols-7">
           <TabsTrigger value="general">General</TabsTrigger>
           <TabsTrigger value="notifications">Notifications</TabsTrigger>
           <TabsTrigger value="security">Security</TabsTrigger>
           <TabsTrigger value="rfid">RFID</TabsTrigger>
           <TabsTrigger value="assets">Assets</TabsTrigger>
           <TabsTrigger value="backup">Backup</TabsTrigger>
+          <TabsTrigger value="advanced">Advanced</TabsTrigger>
         </TabsList>
 
         {/* General Settings */}
@@ -176,7 +179,6 @@ const Settings = () => {
           </Card>
         </TabsContent>
 
-        {/* Notification Settings */}
         <TabsContent value="notifications">
           <Card>
             <CardHeader>
@@ -254,7 +256,6 @@ const Settings = () => {
           </Card>
         </TabsContent>
 
-        {/* Security Settings */}
         <TabsContent value="security">
           <Card>
             <CardHeader>
@@ -318,7 +319,6 @@ const Settings = () => {
           </Card>
         </TabsContent>
 
-        {/* RFID Settings */}
         <TabsContent value="rfid">
           <Card>
             <CardHeader>
@@ -376,7 +376,6 @@ const Settings = () => {
           </Card>
         </TabsContent>
 
-        {/* Asset Settings */}
         <TabsContent value="assets">
           <Card>
             <CardHeader>
@@ -429,7 +428,6 @@ const Settings = () => {
           </Card>
         </TabsContent>
 
-        {/* Backup Settings */}
         <TabsContent value="backup">
           <Card>
             <CardHeader>
@@ -486,6 +484,11 @@ const Settings = () => {
               )}
             </CardContent>
           </Card>
+        </TabsContent>
+
+        {/* Advanced Settings */}
+        <TabsContent value="advanced">
+          <AdvancedSettings />
         </TabsContent>
       </Tabs>
     </div>
