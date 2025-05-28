@@ -21,6 +21,12 @@ import { useToast } from '@/hooks/use-toast';
 import SystemStatus from '../system/SystemStatus';
 import AuditLog from '../system/AuditLog';
 
+interface AlertThresholds {
+  cpuUsage: number;
+  memoryUsage: number;
+  diskUsage: number;
+}
+
 const AdvancedSettings = () => {
   const { toast } = useToast();
   
@@ -51,7 +57,7 @@ const AdvancedSettings = () => {
       cpuUsage: 80,
       memoryUsage: 85,
       diskUsage: 90
-    },
+    } as AlertThresholds,
     
     // Custom CSS/JS
     customCss: '',
@@ -67,11 +73,11 @@ const AdvancedSettings = () => {
     setAdvancedSettings(prev => ({ ...prev, [key]: value }));
   };
 
-  const updateNestedSetting = (parent: string, key: string, value: any) => {
+  const updateNestedSetting = (parent: keyof typeof advancedSettings, key: string, value: any) => {
     setAdvancedSettings(prev => ({
       ...prev,
       [parent]: {
-        ...prev[parent as keyof typeof prev],
+        ...(prev[parent] as object),
         [key]: value
       }
     }));
