@@ -30,13 +30,13 @@ export const useAuthStore = create<AuthState>()(
       isSetupComplete: localStorage.getItem('setup_complete') === 'true',
       
       login: async (email: string, password: string) => {
-        // Mock authentication - in real app, this would call your API
+        // Enhanced authentication with role-based access
         if (email === 'admin@company.com' && password === 'admin123') {
           const user: User = {
             id: '1',
             email,
             name: 'System Administrator',
-            role: 'admin',
+            role: 'super-admin',
             permissions: ['all'],
             createdAt: new Date().toISOString(),
             lastLogin: new Date().toISOString()
@@ -45,6 +45,38 @@ export const useAuthStore = create<AuthState>()(
           set({ user, isAuthenticated: true });
           return true;
         }
+        
+        // Additional demo accounts for different roles
+        if (email === 'manager@company.com' && password === 'manager123') {
+          const user: User = {
+            id: '2',
+            email,
+            name: 'Asset Manager',
+            role: 'manager',
+            permissions: ['assets.create', 'assets.read', 'assets.update', 'assets.checkout', 'assets.checkin', 'users.read', 'users.update', 'reports.assets', 'rfid.scan'],
+            createdAt: new Date().toISOString(),
+            lastLogin: new Date().toISOString()
+          };
+          
+          set({ user, isAuthenticated: true });
+          return true;
+        }
+        
+        if (email === 'operator@company.com' && password === 'operator123') {
+          const user: User = {
+            id: '3',
+            email,
+            name: 'Asset Operator',
+            role: 'operator',
+            permissions: ['assets.read', 'assets.checkout', 'assets.checkin', 'rfid.scan'],
+            createdAt: new Date().toISOString(),
+            lastLogin: new Date().toISOString()
+          };
+          
+          set({ user, isAuthenticated: true });
+          return true;
+        }
+        
         return false;
       },
       
