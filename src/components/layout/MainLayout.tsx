@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
@@ -15,7 +16,10 @@ import {
   Zap,
   Shield,
   Crown,
-  Code2
+  Code2,
+  FolderOpen,
+  FileText,
+  Upload
 } from 'lucide-react';
 import { useAuthStore } from '@/stores/authStore';
 import { useRoleStore } from '@/stores/roleStore';
@@ -34,22 +38,30 @@ const MainLayout = ({ children }: MainLayoutProps) => {
   }, [initializeDefaultRoles]);
 
   const navigation = [
-    { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-    { name: 'Assets', href: '/assets', icon: Package },
-    { name: 'Inventory', href: '/inventory', icon: Boxes },
-    { name: 'Users', href: '/users', icon: Users },
-    { name: 'Roles', href: '/roles', icon: Shield },
-    { name: 'Workflows', href: '/workflows', icon: GitBranch },
-    { name: 'RFID Devices', href: '/rfid', icon: Zap },
-    { name: 'API Docs', href: '/api-docs', icon: Code2 },
-    { name: 'Settings', href: '/settings', icon: Settings },
-    { name: 'Backup', href: '/backup', icon: Database }
+    { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard, roles: ['super-admin', 'admin', 'manager', 'operator', 'viewer'] },
+    { name: 'Assets', href: '/assets', icon: Package, roles: ['super-admin', 'admin', 'manager', 'operator', 'viewer'] },
+    { name: 'Inventory', href: '/inventory', icon: Boxes, roles: ['super-admin', 'admin', 'manager'] },
+    { name: 'Asset Requests', href: '/requests', icon: FileText, roles: ['super-admin', 'admin', 'manager', 'operator', 'viewer'] },
+    { name: 'File Management', href: '/files', icon: FolderOpen, roles: ['super-admin', 'admin', 'manager'] },
+    { name: 'Users', href: '/users', icon: Users, roles: ['super-admin', 'admin', 'manager'] },
+    { name: 'Roles', href: '/roles', icon: Shield, roles: ['super-admin', 'admin'] },
+    { name: 'Workflows', href: '/workflows', icon: GitBranch, roles: ['super-admin', 'admin', 'manager'] },
+    { name: 'RFID Devices', href: '/rfid', icon: Zap, roles: ['super-admin', 'admin', 'manager', 'operator'] },
+    { name: 'API Docs', href: '/api-docs', icon: Code2, roles: ['super-admin', 'admin'] },
+    { name: 'Deployment', href: '/deployment', icon: Upload, roles: ['super-admin'] },
+    { name: 'Settings', href: '/settings', icon: Settings, roles: ['super-admin', 'admin', 'manager'] },
+    { name: 'Backup', href: '/backup', icon: Database, roles: ['super-admin', 'admin'] }
   ];
 
   // Add Super Admin panel for super admins
   if (user?.role === 'super-admin' || user?.permissions?.includes('all')) {
-    navigation.splice(-2, 0, { name: 'Super Admin', href: '/admin', icon: Crown });
+    navigation.splice(-2, 0, { name: 'Super Admin', href: '/admin', icon: Crown, roles: ['super-admin'] });
   }
+
+  // Filter navigation based on user role
+  const filteredNavigation = navigation.filter(item => 
+    item.roles.includes(user?.role || 'viewer')
+  );
 
   const location = useLocation();
 
@@ -62,7 +74,7 @@ const MainLayout = ({ children }: MainLayoutProps) => {
         </div>
         <div className="p-4">
           <nav className="space-y-1">
-            {navigation.map((item) => (
+            {filteredNavigation.map((item) => (
               <Link
                 key={item.name}
                 to={item.href}
@@ -94,7 +106,7 @@ const MainLayout = ({ children }: MainLayoutProps) => {
         <header className="flex items-center justify-between h-16 px-6 border-b border-gray-200 bg-white">
           <div className="flex items-center space-x-4">
             <h2 className="text-xl font-semibold">
-              {navigation.find(item => item.href === location.pathname)?.name || 'Dashboard'}
+              {filteredNavigation.find(item => item.href === location.pathname)?.name || 'Dashboard'}
             </h2>
           </div>
           

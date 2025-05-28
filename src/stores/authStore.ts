@@ -1,4 +1,3 @@
-
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
@@ -6,7 +5,7 @@ export interface User {
   id: string;
   email: string;
   name: string;
-  role: 'admin' | 'manager' | 'operator' | 'viewer';
+  role: 'super-admin' | 'admin' | 'manager' | 'operator' | 'viewer';
   permissions: string[];
   createdAt: string;
   lastLogin?: string;

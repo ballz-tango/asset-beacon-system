@@ -16,6 +16,9 @@ import Backup from '@/components/backup/Backup';
 import RoleManagement from '@/components/roles/RoleManagement';
 import SuperAdminPanel from '@/components/admin/SuperAdminPanel';
 import ApiDocumentation from '@/components/api/ApiDocumentation';
+import FileManagement from '@/components/files/FileManagement';
+import AssetRequests from '@/components/requests/AssetRequests';
+import DeploymentScripts from '@/components/deployment/DeploymentScripts';
 
 const Index = () => {
   const { isAuthenticated, isSetupComplete } = useAuthStore();
@@ -42,10 +45,13 @@ const Index = () => {
         <Route path="/roles" element={<RoleManagement />} />
         <Route path="/workflows" element={<WorkflowManagement />} />
         <Route path="/rfid" element={<RFIDDevices />} />
+        <Route path="/files" element={<FileManagement />} />
+        <Route path="/requests" element={<AssetRequests />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/backup" element={<Backup />} />
         <Route path="/admin" element={<SuperAdminPanel />} />
         <Route path="/api-docs" element={<ApiDocumentation />} />
+        <Route path="/deployment" element={<DeploymentScripts />} />
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Routes>
     </MainLayout>
